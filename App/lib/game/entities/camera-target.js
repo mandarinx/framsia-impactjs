@@ -15,8 +15,8 @@ EntityCameraTarget = ig.Entity.extend({
     size: {x: 8, y: 8},
     gravityFactor: 0,
 
-    type: ig.Entity.TYPE.A,
-    checkAgainst: ig.Entity.TYPE.B,
+    type: ig.Entity.TYPE.NONE,
+    checkAgainst: ig.Entity.TYPE.NONE,
     collides: ig.Entity.COLLIDES.NEVER,
     
     maxVel: {x: 70, y:0},

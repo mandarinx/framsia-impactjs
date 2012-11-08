@@ -9,8 +9,10 @@ ig.module(
     'impact.background-map',
 
     'game.levels.entrance',
+    'game.levels.gameover',
     'game.camera.camera',
-    'game.entities.camera-target'
+    'game.entities.camera-target',
+    'game.entities.ufo'
 )
 .defines(function(){
 
@@ -22,6 +24,7 @@ MyGame = ig.Game.extend({
     player: null,
     camera: null,
     cameraTarget: null,
+    isGameOver: false,
     
     init: function() {
         ig.input.bind(ig.KEY.UP_ARROW, 'up');
@@ -35,32 +38,41 @@ MyGame = ig.Game.extend({
     },
 
     loadLevel: function(level) {
+        if (!this.isGameOver) {
+            var as = new ig.AnimationSheet('media/tilemap-CGA01.png', 8, 8);
+            this.backgroundAnims = {
+                'media/tilemap-CGA01.png': {
+                    78: new ig.Animation( as, 0.1, [79, 80, 81, 78] )
+                }
+            };
 
-        var as = new ig.AnimationSheet('media/tilemap-CGA01.png', 8, 8);
-        this.backgroundAnims = {
-            'media/tilemap-CGA01.png': {
-                78: new ig.Animation( as, 0.1, [79, 80, 81, 78] )
-            }
-        };
+            this.parent(level);
 
-        this.parent(level);
+            this.player = this.getEntitiesByType(EntityPlayer)[0];
+            this.cameraTarget = this.getEntitiesByType(EntityCameraTarget)[0];
+            this.player.setup(this.cameraTarget, this.backgroundMaps[0], this.getEntitiesByType(EntityUfo)[0]);
 
-        this.player = this.getEntitiesByType(EntityPlayer)[0];
-        this.cameraTarget = this.getEntitiesByType(EntityCameraTarget)[0];
-        this.player.setup(this.cameraTarget, this.backgroundMaps[0]);
+            // Set camera max and reposition trap
+            this.camera.max.x = this.collisionMap.width * this.collisionMap.tilesize - ig.system.width;
+            this.camera.max.y = this.collisionMap.height * this.collisionMap.tilesize - ig.system.height;
+            this.camera.set(this.cameraTarget);
 
-        // Set camera max and reposition trap
-        this.camera.max.x = this.collisionMap.width * this.collisionMap.tilesize - ig.system.width;
-        this.camera.max.y = this.collisionMap.height * this.collisionMap.tilesize - ig.system.height;
-        this.camera.set(this.cameraTarget);
+        } else {
+            this.parent(level);
+        }
     },
 
     restart: function() {
         this.loadLevel(LevelEntrance);
     },
+
+    gameOver: function() {
+        this.isGameOver = true;
+        this.loadLevel(LevelGameover);
+    },
     
     update: function() {
-        this.camera.follow(this.cameraTarget);
+        if (!this.isGameOver) this.camera.follow(this.cameraTarget);
         this.parent();
     }
 
