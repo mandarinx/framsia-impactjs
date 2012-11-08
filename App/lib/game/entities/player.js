@@ -13,7 +13,7 @@ EntityPlayer = ig.Entity.extend({
     checkAgainst: ig.Entity.TYPE.B,
     collides: ig.Entity.COLLIDES.PASSIVE,
 
-    animSheet: new ig.AnimationSheet( 'media/8px-astronaut-01.png', 8, 8),
+    animSheet: new ig.AnimationSheet('media/astronaut-8px-01.png', 8, 8),
 
     size: {x: 8, y: 8},
 
@@ -29,11 +29,11 @@ EntityPlayer = ig.Entity.extend({
     ufo: null,
 
     init: function( x, y, settings ) {
-        this.addAnim('idle', 1, [0]);
-        this.addAnim('walk', .2, [1,2]);
-        this.addAnim('jump', 1, [3], true);
-        this.addAnim('float', 1, [4], true);
-        this.addAnim('teleport', .1, [5,6,7,5,6,7,5,6,7,5,6,7,5,6,7], true);
+        this.addAnim('idle',        1,  [0]);
+        this.addAnim('walk',        .2, [1,2]);
+        this.addAnim('jump',        1,  [3], true);
+        this.addAnim('lookup',      1,  [4], true);
+        this.addAnim('teleport',    .1, [5,6,7,5,6,7,5,6,7,5,6,7,5,6,7], true);
 
         this.parent( x, y, settings ); // Super
     },
@@ -104,11 +104,7 @@ EntityPlayer = ig.Entity.extend({
                 }
             }
 
-            if (this.vel.x != 0) {
-                this.currentAnim = this.anims.walk;
-            } else {
-                this.currentAnim = this.anims.idle;
-            }
+            this.currentAnim = this.vel.x != 0 ? this.anims.walk : this.anims.idle;
 
             if (this.vel.y != 0 && !this.standing) {
                 this.currentAnim = this.anims.jump;

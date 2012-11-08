@@ -12,7 +12,8 @@ ig.module(
     'game.levels.gameover',
     'game.camera.camera',
     'game.entities.camera-target',
-    'game.entities.ufo'
+    'game.entities.ufo',
+    'plugins.touch-button'
 )
 .defines(function(){
 
@@ -25,6 +26,7 @@ MyGame = ig.Game.extend({
     camera: null,
     cameraTarget: null,
     isGameOver: false,
+    button: null,
     
     init: function() {
         ig.input.bind(ig.KEY.UP_ARROW, 'up');
@@ -35,6 +37,22 @@ MyGame = ig.Game.extend({
         this.camera.lookAhead.x = ig.ua.mobile ? ig.system.width/6 : 0;
 
         this.loadLevel(LevelEntrance);
+
+        // if (window.ejecta) {
+        //     // Figure out the scaling ratio of internal to hardware pixels
+        //     var hwpx = (window.innerWidth / ig.system.width) * ig.ua.pixelRatio;
+        //     console.log('Hardware Pixel Scale: ', hwpx);
+
+        //     ig.system.getDrawPos = function(p) {
+        //         // Snap draw positions to the closest hardware pixel
+        //         return ((p*hwpx)|0)/hwpx;
+        //     };
+        // }
+
+        // For Mobile Browsers and Ejecta
+        if (ig.ua.mobile) {
+            this.button = new ig.TouchButton('up', 0, 0, 512, 288);
+        }
     },
 
     loadLevel: function(level) {
@@ -74,6 +92,11 @@ MyGame = ig.Game.extend({
     update: function() {
         if (!this.isGameOver) this.camera.follow(this.cameraTarget);
         this.parent();
+    },
+
+    draw: function() {
+        this.parent();
+        this.button.draw();
     }
 
 });
