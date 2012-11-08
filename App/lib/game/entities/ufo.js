@@ -12,7 +12,7 @@ EntityUfo = ig.Entity.extend({
     checkAgainst: ig.Entity.TYPE.NONE,
     collides: ig.Entity.COLLIDES.NEVER,
 
-    animSheet: new ig.AnimationSheet( 'media/ufo-01.png', 16, 16),
+    animSheet: new ig.AnimationSheet('media/ufo-01.png', 16, 16),
 
     size: {x: 16, y: 16},
 
