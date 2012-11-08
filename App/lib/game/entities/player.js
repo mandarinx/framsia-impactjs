@@ -13,8 +13,7 @@ EntityPlayer = ig.Entity.extend({
     checkAgainst: ig.Entity.TYPE.B,
     collides: ig.Entity.COLLIDES.PASSIVE,
 
-    animSheet: new ig.AnimationSheet('media/astronaut-8px-01.png', 8, 8),
-
+    animSheet: new ig.AnimationSheet('media/tilemap-CGA01.png', 8, 8),
     size: {x: 8, y: 8},
 
     cameraTarget: null,
@@ -29,11 +28,10 @@ EntityPlayer = ig.Entity.extend({
     ufo: null,
 
     init: function( x, y, settings ) {
-        this.addAnim('idle',        1,  [0]);
-        this.addAnim('walk',        .2, [1,2]);
-        this.addAnim('jump',        1,  [3], true);
-        this.addAnim('lookup',      1,  [4], true);
-        this.addAnim('teleport',    .1, [5,6,7,5,6,7,5,6,7,5,6,7,5,6,7], true);
+        this.addAnim('idle',        1,  [91]);
+        this.addAnim('walk',        .2, [92,93]);
+        this.addAnim('jump',        1,  [94], true);
+        this.addAnim('teleport',    .1, [95,96,97,98,95,96,97,98,95,96,97,98,95,96,97,98,95,96,97,98], true);
 
         this.parent( x, y, settings ); // Super
     },
@@ -74,7 +72,7 @@ EntityPlayer = ig.Entity.extend({
     },
 
     update: function() {
-
+        
         if (this.currentAnim == this.anims.teleport) {
             if (!this.teleport) {
                 this.currentAnim.rewind();

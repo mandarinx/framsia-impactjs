@@ -96,7 +96,7 @@ MyGame = ig.Game.extend({
 
     draw: function() {
         this.parent();
-        this.button.draw();
+        if (this.button !== null) this.button.draw();
     }
 
 });
